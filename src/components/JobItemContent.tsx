@@ -1,55 +1,54 @@
 import { useActiveId, useJobItemDetails } from "../lib/hooks";
 import BookmarkIcon from "./BookmarkIcon";
+import Spinner from "./Spinner";
 
 export default function JobItemContent() {
   const activeId = useActiveId();
-  const jobItemDetails = useJobItemDetails(activeId);
+  const [jobItem, isLoading] = useJobItemDetails(activeId);
 
-  if (!jobItemDetails) {
+  if (isLoading) {
+    return <LoadingJobContent />;
+  }
+
+  if (!jobItem) {
     return <EmptyJobContent />;
   }
 
   return (
     <section className="job-details">
       <div>
-        <img src={jobItemDetails.coverImgURL} alt="#" />
+        <img src={jobItem.coverImgURL} alt="#" />
 
-        <a
-          className="apply-btn"
-          href={jobItemDetails.companyURL}
-          target="_blank"
-        >
+        <a className="apply-btn" href={jobItem.companyURL} target="_blank">
           Apply
         </a>
 
         <section className="job-info">
           <div className="job-info__left">
-            <div className="job-info__badge">{jobItemDetails.badgeLetters}</div>
+            <div className="job-info__badge">{jobItem.badgeLetters}</div>
             <div className="job-info__below-badge">
-              <time className="job-info__time">{jobItemDetails.daysAgo}d</time>
+              <time className="job-info__time">{jobItem.daysAgo}d</time>
 
               <BookmarkIcon />
             </div>
           </div>
 
           <div className="job-info__right">
-            <h2 className="second-heading">{jobItemDetails.title}</h2>
-            <p className="job-info__company">{jobItemDetails.company}</p>
-            <p className="job-info__description">
-              {jobItemDetails.description}
-            </p>
+            <h2 className="second-heading">{jobItem.title}</h2>
+            <p className="job-info__company">{jobItem.company}</p>
+            <p className="job-info__description">{jobItem.description}</p>
             <div className="job-info__extras">
               <p className="job-info__extra">
                 <i className="fa-solid fa-clock job-info__extra-icon"></i>
-                {jobItemDetails.duration}
+                {jobItem.duration}
               </p>
               <p className="job-info__extra">
                 <i className="fa-solid fa-money-bill job-info__extra-icon"></i>
-                {jobItemDetails.salary}
+                {jobItem.salary}
               </p>
               <p className="job-info__extra">
                 <i className="fa-solid fa-location-dot job-info__extra-icon"></i>{" "}
-                {jobItemDetails.location}
+                {jobItem.location}
               </p>
             </div>
           </div>
@@ -64,7 +63,7 @@ export default function JobItemContent() {
               </p>
             </div>
             <ul className="qualifications__list">
-              {jobItemDetails.qualifications.map((qualification, index) => (
+              {jobItem.qualifications.map((qualification, index) => (
                 <li key={index} className="qualifications__item">
                   {qualification}
                 </li>
@@ -80,7 +79,7 @@ export default function JobItemContent() {
               </p>
             </div>
             <ul className="reviews__list">
-              {jobItemDetails.reviews.map((review, index) => (
+              {jobItem.reviews.map((review, index) => (
                 <li key={index} className="reviews__item">
                   {review}
                 </li>
@@ -111,6 +110,16 @@ function EmptyJobContent() {
             Start by searching for any technology your ideal job is working with
           </p>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function LoadingJobContent() {
+  return (
+    <section className="job-details">
+      <div>
+        <Spinner />
       </div>
     </section>
   );
