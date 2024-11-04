@@ -6,7 +6,7 @@ import Container from "./Container";
 import Background from "./Background";
 import SearchForm from "./SearchForm";
 import ResultsCount from "./ResultsCount";
-import { useJobItems } from "../lib/hooks";
+import { useDebounce, useJobItems } from "../lib/hooks";
 import Header, { HeaderTop } from "./Header";
 import JobItemContent from "./JobItemContent";
 import BookmarksButton from "./BookmarksButton";
@@ -16,7 +16,9 @@ import PaginationControls from "./PaginationControls";
 
 function App() {
   const [searchText, setSearchText] = useState("");
-  const { jobItemsSliced, isLoading, totalCount } = useJobItems(searchText);
+  const debouncedSearchText = useDebounce(searchText, 500);
+  const { jobItemsSliced, isLoading, totalCount } =
+    useJobItems(debouncedSearchText);
 
   return (
     <>

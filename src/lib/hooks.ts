@@ -23,7 +23,6 @@ export function useJobItems(searchText: string) {
   }, [searchText]);
   return { jobItemsSliced, isLoading, totalCount } as const;
 }
-
 export function useJobItemDetails(id: number | null) {
   const [jobItemDetails, setJobItemDetails] = useState<TJobItemDetails | null>(
     null
@@ -42,7 +41,7 @@ export function useJobItemDetails(id: number | null) {
     fetchData();
   }, [id]);
 
-  return {jobItemDetails, isLoading} as const;
+  return { jobItemDetails, isLoading } as const;
 }
 export function useActiveId() {
   const [activeId, setActiveId] = useState<number | null>(null);
@@ -60,4 +59,16 @@ export function useActiveId() {
   }, []);
 
   return activeId;
+}
+export function useDebounce<T>(value: T, delay = 500): T {
+  const [debounceValue, setDebounceValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebounceValue(value);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounceValue;
 }

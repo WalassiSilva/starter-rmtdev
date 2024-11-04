@@ -69,8 +69,8 @@ export default function JobItemContent() {
               </p>
             </div>
             <ul className="qualifications__list">
-              {jobItemDetails.qualifications.map((qualification, index) => (
-                <li key={index} className="qualifications__item">
+              {jobItemDetails.qualifications.map((qualification) => (
+                <li key={qualification} className="qualifications__item">
                   {qualification}
                 </li>
               ))}
@@ -85,8 +85,8 @@ export default function JobItemContent() {
               </p>
             </div>
             <ul className="reviews__list">
-              {jobItemDetails.reviews.map((review, index) => (
-                <li key={index} className="reviews__item">
+              {jobItemDetails.reviews.map((review) => (
+                <li key={review} className="reviews__item">
                   {review}
                 </li>
               ))}
