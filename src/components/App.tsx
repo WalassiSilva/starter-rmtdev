@@ -6,19 +6,21 @@ import Container from "./Container";
 import Background from "./Background";
 import SearchForm from "./SearchForm";
 import ResultsCount from "./ResultsCount";
-import { useDebounce, useJobItems } from "../lib/hooks";
 import Header, { HeaderTop } from "./Header";
 import JobItemContent from "./JobItemContent";
 import BookmarksButton from "./BookmarksButton";
 import Sidebar, { SidebarTop } from "./Sidebar";
 import SortingControls from "./SortingControls";
 import PaginationControls from "./PaginationControls";
+import { useDebounce } from "../lib/hooks/useDebounce";
+import { useJobItems } from "../lib/hooks/useJobItems";
 
 function App() {
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 500);
-  const { jobItemsSliced, isLoading, totalCount } =
-    useJobItems(debouncedSearchText);
+  const { jobItems, isLoading } = useJobItems(debouncedSearchText);
+  const jobItemsSliced = jobItems?.slice(0, 7) || [];
+  const totalCount = jobItems?.length || 0;
 
   return (
     <>

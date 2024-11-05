@@ -1,4 +1,6 @@
-import { useActiveId, useJobItemDetails } from "../lib/hooks";
+
+import { useActiveId } from "../lib/hooks/useActiveId";
+import { useJobItemDetails } from "../lib/hooks/useJobItemDetails";
 import BookmarkIcon from "./BookmarkIcon";
 import Spinner from "./Spinner";
 
