@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { BASE_API_URL } from "../constants";
-import {  TJobItemDetails } from "../types";
+import { TJobItemDetails } from "../types";
+import { handleError } from "../utils";
 
 type JobItemApiResponse = {
   public: boolean;
@@ -21,16 +22,14 @@ async function fetchJobItem(id: number): Promise<JobItemApiResponse> {
 
 export function useJobItemDetails(id: number | null) {
   const { data, isInitialLoading } = useQuery(
-    ["job-item-details",id],
+    ["job-item-details", id],
     () => (id ? fetchJobItem(id) : null),
     {
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
       retry: false,
       enabled: Boolean(id),
-      onError: (error) => {
-        console.log(error);
-      },
+      onError: handleError,
     }
   );
   return {

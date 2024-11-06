@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { BASE_API_URL } from "../constants";
 import { TJobItem } from "../types";
+import { handleError } from "../utils";
 
 type JobItemsApiResponse = {
   public: boolean;
@@ -27,9 +28,7 @@ export function useJobItems(searchText: string) {
       refetchOnWindowFocus: false,
       retry: false,
       enabled: Boolean(searchText),
-      onError: (error) => {
-        console.log(error);
-      },
+      onError: handleError,
     }
   );
   return {
