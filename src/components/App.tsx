@@ -20,8 +20,20 @@ function App() {
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 500);
   const { jobItems, isLoading } = useJobItems(debouncedSearchText);
-  const jobItemsSliced = jobItems?.slice(0, 7) || [];
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const jobItemsSliced =
+    jobItems?.slice(currentPage * 7 - 7, currentPage * 7) || [];
   const totalCount = jobItems?.length || 0;
+  const totalPages = Math.ceil(totalCount / 7);
+
+  const handleChangePage = (direction: "prev" | "next") => {
+    if (direction === "prev") {
+      setCurrentPage((prev) => prev - 1);
+    } else if (direction === "next") {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
 
   return (
     <>
@@ -41,7 +53,11 @@ function App() {
             <SortingControls />
           </SidebarTop>
           <JobList jobItems={jobItemsSliced} isLoading={isLoading} />
-          <PaginationControls />
+          <PaginationControls
+            onClick={handleChangePage}
+            currentPage={currentPage}
+            totalPages={totalPages}
+          />
         </Sidebar>
         <JobItemContent />
       </Container>
