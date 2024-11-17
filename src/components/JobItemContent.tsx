@@ -1,12 +1,12 @@
 
 import { useActiveId } from "../lib/hooks/useActiveId";
-import { useJobItemDetails } from "../lib/hooks/useJobItemDetails";
+import { useJobItem } from "../lib/hooks/useJobItem";
 import BookmarkIcon from "./BookmarkIcon";
 import Spinner from "./Spinner";
 
 export default function JobItemContent() {
   const activeId = useActiveId();
-  const { jobItemDetails, isLoading } = useJobItemDetails(activeId);
+  const { jobItemDetails, isLoading } = useJobItem(activeId);
 
   if (isLoading) {
     return <LoadingJobContent />;

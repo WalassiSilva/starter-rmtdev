@@ -3,12 +3,12 @@ import { useBookmarksContext } from "../lib/hooks/useBookmarksContext";
 
 type BookmarkIconProps = { id: number };
 export default function BookmarkIcon({ id }: BookmarkIconProps) {
-  const { bookmarkIds, handleToogleBookmark } = useBookmarksContext();
+  const { bookmarkIds, handleToggleBookmark } = useBookmarksContext();
   return (
     <button
       className="bookmark-btn"
       onClick={(e) => {
-        handleToogleBookmark(id);
+        handleToggleBookmark(id);
         e.preventDefault();
         e.stopPropagation();
       }}

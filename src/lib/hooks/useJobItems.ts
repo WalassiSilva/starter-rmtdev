@@ -19,7 +19,7 @@ async function fetchJobItems(searchText: string): Promise<JobItemsApiResponse> {
   return data;
 }
 
-export function useJobItems(searchText: string) {
+export function useSearchQuery(searchText: string) {
   const { data, isInitialLoading } = useQuery(
     ["job-items", searchText],
     () => fetchJobItems(searchText),
@@ -36,3 +36,5 @@ export function useJobItems(searchText: string) {
     isLoading: isInitialLoading,
   };
 }
+
+

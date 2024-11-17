@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { BASE_API_URL } from "../constants";
 import { TJobItemDetails } from "../types";
 import { handleError } from "../utils";
@@ -20,9 +20,9 @@ async function fetchJobItem(id: number): Promise<JobItemApiResponse> {
   return data;
 }
 
-export function useJobItemDetails(id: number | null) {
+export function useJobItem(id: number | null) {
   const { data, isInitialLoading } = useQuery(
-    ["job-item-details", id],
+    ["job-item", id],
     () => (id ? fetchJobItem(id) : null),
     {
       staleTime: 1000 * 60 * 60,
@@ -36,4 +36,23 @@ export function useJobItemDetails(id: number | null) {
     jobItemDetails: data?.jobItem,
     isLoading: isInitialLoading,
   } as const;
+}
+export function useJobItems(ids: number[]) {
+  const res = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: ["job-item", id],
+      queryFn: () => fetchJobItem(id),
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: Boolean(id),
+      onError: handleError,
+    })),
+  });
+  const jobItems = res
+    .map((item) => item.data?.jobItem)
+    .filter((jobItem) => jobItem !== undefined);
+  const isLoading = res.some((item) => item.isLoading);
+
+  return { jobItems, isLoading } as const;
 }

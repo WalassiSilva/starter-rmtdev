@@ -13,15 +13,15 @@ import Sidebar, { SidebarTop } from "./Sidebar";
 import SortingControls from "./SortingControls";
 import PaginationControls from "./PaginationControls";
 import { useDebounce } from "../lib/hooks/useDebounce";
-import { useJobItems } from "../lib/hooks/useJobItems";
 import { Toaster } from "react-hot-toast";
 import { RESULTS_PER_PAGE } from "../lib/constants";
 import { PageDirection, SortBy } from "../lib/types";
+import { useSearchQuery } from "../lib/hooks/useJobItems";
 
 function App() {
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 500);
-  const { jobItems, isLoading } = useJobItems(debouncedSearchText);
+  const { jobItems, isLoading } = useSearchQuery(debouncedSearchText);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortby] = useState<SortBy>("relevant");
   const jobItemsSorted = [...(jobItems || [])].sort((a, b) => {
